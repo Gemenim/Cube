@@ -1,64 +1,37 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Separator))]
 public class Fuse : MonoBehaviour
 {
     [SerializeField] private BoxCollider _boxCollider;
-    [SerializeField] private int _minNumberParts = 2;
-    [SerializeField] private int _maxNumberParts = 6;
     [SerializeField] private float _explosionRadius = 2;
     [SerializeField] private float _explosionForce = 5;
-    [SerializeField] private Color[] _colors = { Color.red, Color.green, Color.blue, };
-    [SerializeField] Fuse _prefab;
 
-    private int _maxChanceDivision = 100;
-    private int _chanceDivision = 100;
-    private int _multiplierReductionPart = 2;
-    private int _reducingChance = 20;
+    private Separator _separator;
+    private Renderer _renderer;
 
     private void OnValidate()
     {
-        if (_minNumberParts < 2)
-            _minNumberParts = 2;
-
-        if (_maxNumberParts < _minNumberParts)
-            _maxNumberParts = _minNumberParts + 1;
-
         if (_explosionRadius < 0)
             _explosionRadius = 0;
     }
 
+    private void Start()
+    {
+        _separator = GetComponent<Separator>();
+    }
+
     private void OnMouseUpAsButton()
     {
-        Division();
+        Share();
     }
 
-    private void Division()
+    private void Share()
     {
-        bool canShare = Random.Range(0, _maxChanceDivision) <= _chanceDivision;
-
-        if (canShare)
-        {
-            CreateParts();
-            Explode();
-            Destroy(gameObject);
-        }
-        else
-        {
-            Explode();
-            Destroy(gameObject);
-        }
-    }
-
-    private void CreateParts()
-    {
-        int numberParts = Random.Range(_minNumberParts, _maxNumberParts + 1);
-
-        for (int i = 0; i < numberParts; i++)
-        {
-            Fuse cube = Instantiate(_prefab, transform.position, Quaternion.identity);
-            cube.SetParameters();
-        }
+        _separator.Separate();
+        Explode();
+        Destroy(gameObject);
     }
 
     private void Explode()
@@ -79,12 +52,5 @@ public class Fuse : MonoBehaviour
         }
 
         return cubes;
-    }
-
-    public void SetParameters()
-    {
-        transform.localScale /= _multiplierReductionPart;
-        _chanceDivision -= _reducingChance;
-        gameObject.GetComponent<Renderer>().material.color = _colors[Random.Range(0, _colors.Length)];
     }
 }

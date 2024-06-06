@@ -356,6 +356,7 @@
 -analyzer:"A:/Unity/Unity Hub/2022.3.12f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
 -analyzer:"A:/Unity/Unity Hub/2022.3.12f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/Scripts/Fuse.cs"
+"Assets/Scripts/Separator.cs"
 -langversion:9.0
 
 /deterministic
