@@ -32,12 +32,15 @@ public class Separator : MonoBehaviour
         _renderer = GetComponent<Renderer>();
     }
 
-    public void Separate()
+    public List<Rigidbody> Separate()
     {
         bool canDivision = Random.Range(0, _maxChanceDivision) <= _chanceDivision;
+        List<Rigidbody> cubes = new();
 
         if (canDivision)
-            CreateParts();
+            cubes = CreateParts();
+
+        return cubes;
     }
 
     public void SetParameters()
@@ -47,15 +50,19 @@ public class Separator : MonoBehaviour
         _renderer.material.color = _colors[Random.Range(0, _colors.Length)];
     }
 
-    private void CreateParts()
+    private List<Rigidbody> CreateParts()
     {
         int numberParts = Random.Range(_minNumberParts, _maxNumberParts + 1);
+        List<Rigidbody> cubes = new();
 
         for (int i = 0; i < numberParts; i++)
         {
             Fuse cube = Instantiate(_prefab, transform.position, Quaternion.identity);
             Separator separator = cube.GetComponent<Separator>();
             separator.SetParameters();
+            cubes.Add(cube.GetComponent<Rigidbody>());
         }
+
+        return cubes;
     }
 }

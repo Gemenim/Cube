@@ -29,28 +29,13 @@ public class Fuse : MonoBehaviour
 
     private void Share()
     {
-        _separator.Separate();
-        Explode();
+        Explode(_separator.Separate());
         Destroy(gameObject);
     }
 
-    private void Explode()
+    private void Explode(List<Rigidbody> cubes)
     {
-        foreach (Rigidbody explodableObject in GetExplodableObgects())
-            explodableObject.AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
-    }
-
-    private List<Rigidbody> GetExplodableObgects()
-    {
-        Collider[] hits = Physics.OverlapSphere(transform.position, _explosionRadius);
-        List<Rigidbody> cubes = new();
-
-        foreach (Collider hit in hits)
-        {
-            if (hit.attachedRigidbody != null)
-                cubes.Add(hit.attachedRigidbody);
-        }
-
-        return cubes;
+        foreach (Rigidbody cube in cubes)
+            cube.AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
     }
 }
