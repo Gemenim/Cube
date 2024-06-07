@@ -1,21 +1,18 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Renderer))]
+[RequireComponent(typeof(Cube))]
 public class Separator : MonoBehaviour
 {
+    [SerializeField] private Color[] _colors = { Color.red, Color.green, Color.blue, };
     [SerializeField] private int _minNumberParts = 2;
     [SerializeField] private int _maxNumberParts = 6;
-    [SerializeField] private Color[] _colors = { Color.red, Color.green, Color.blue, };
     [SerializeField] private Fuse _prefab;
 
     private Renderer _renderer;
-    private int _multiplierReductionPart = 2;
-
-    private int _maxChanceDivision = 100;
-    private int _chanceDivision = 100;
-    private int _reducingChance = 20;
+    private Cube _cube;
+    private int _multiplierReductionPart = 2;    
 
     private void OnValidate()
     {
@@ -30,14 +27,14 @@ public class Separator : MonoBehaviour
     private void Awake()
     {
         _renderer = GetComponent<Renderer>();
+        _cube = GetComponent<Cube>();
     }
 
     public List<Rigidbody> Separate()
     {
-        bool canDivision = Random.Range(0, _maxChanceDivision) <= _chanceDivision;
         List<Rigidbody> cubes = new();
 
-        if (canDivision)
+        if (_cube.CanDivision)
             cubes = CreateParts();
 
         return cubes;
@@ -46,7 +43,6 @@ public class Separator : MonoBehaviour
     public void SetParameters()
     {
         transform.localScale /= _multiplierReductionPart;
-        _chanceDivision -= _reducingChance;
         _renderer.material.color = _colors[Random.Range(0, _colors.Length)];
     }
 
@@ -59,6 +55,8 @@ public class Separator : MonoBehaviour
         {
             Fuse cube = Instantiate(_prefab, transform.position, Quaternion.identity);
             Separator separator = cube.GetComponent<Separator>();
+            Cube componentCube = cube.GetComponent<Cube>();
+            componentCube.Reduce—hance();
             separator.SetParameters();
             cubes.Add(cube.GetComponent<Rigidbody>());
         }

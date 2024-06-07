@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Separator.cs" />
+    <Compile Include="Assets\Scripts\Cube.cs" />
     <Compile Include="Assets\Scripts\Fuse.cs" />
   </ItemGroup>
   <ItemGroup>
