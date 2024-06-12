@@ -16,7 +16,6 @@ public class Separator : MonoBehaviour
 
     private void OnValidate()
     {
-
         if (_minNumberParts < 2)
             _minNumberParts = 2;
 
@@ -56,6 +55,7 @@ public class Separator : MonoBehaviour
             Fuse cube = Instantiate(_prefab, transform.position, Quaternion.identity);
             Separator separator = cube.GetComponent<Separator>();
             Cube componentCube = cube.GetComponent<Cube>();
+            cube.IncreaseFuse();
             componentCube.Reduce—hance();
             separator.SetParameters();
             cubes.Add(cube.GetComponent<Rigidbody>());
