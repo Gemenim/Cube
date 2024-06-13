@@ -123,9 +123,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _boxCollider: {fileID: 5749016703605312135}
   _explosionRadius: 10
-  _explosionForce: 30
+  _explosionForce: 200
   _increaseRadius: 1
-  _increaseForce: 50
+  _increaseForce: 100
 --- !u!54 &4359042411328264758
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -171,7 +171,7 @@ MonoBehaviour:
   - {r: 0, g: 0, b: 1, a: 1}
   _minNumberParts: 2
   _maxNumberParts: 6
-  _prefab: {fileID: 7652062062501913805}
+  _prefab: {fileID: 7920515056208929978}
 --- !u!114 &7920515056208929978
 MonoBehaviour:
   m_ObjectHideFlags: 0

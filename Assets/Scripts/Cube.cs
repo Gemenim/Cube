@@ -7,12 +7,15 @@ public class Cube : MonoBehaviour
 {
     private int _maxChanceDivision = 100;
     private int _chanceDivision = 100;
-    private int _reducingChance = 20;
+    private int _dividerChance = 2;
 
     private Fuse _fuse;
     private Separator _separator;
 
-    public bool CanDivision => Random.Range(0, _maxChanceDivision) <= _chanceDivision;
+    public int ChanceDivision => _chanceDivision;
+    public Fuse Fuse => _fuse;
+
+    private bool _canDivision => Random.Range(0, _maxChanceDivision) <= _chanceDivision;
 
     private void Awake()
     {
@@ -22,33 +25,35 @@ public class Cube : MonoBehaviour
 
     private void OnMouseUpAsButton()
     {
-        List<Rigidbody> rigidbodies = _separator.Separate();
-
-        if (rigidbodies.Count > 0)
-        {
-            _fuse.Share(rigidbodies);
-        }
-        else
-        {
-            TakeRigidbodyRaycast(out rigidbodies);
-            _fuse.Share(rigidbodies);
-        }
+        if (_canDivision)
+            _fuse.Share(_separator.CreateParts());
+        else        
+            _fuse.Share(TakeRigidbodyRaycast());
     }
 
-    public void Reduce—hance()
+    public void Init(Cube cube)
     {
-        _chanceDivision -= _reducingChance;
+        _separator.Init();
+        Reduce—hance(cube.ChanceDivision);
+        _fuse.Init(cube.Fuse.ExplosionForce, cube.Fuse.ExplosionRadius);
     }
 
-    private void TakeRigidbodyRaycast(out List<Rigidbody> rigidbodies)
+    private void Reduce—hance(int chanceDivision)
+    {
+        _chanceDivision = chanceDivision / _dividerChance;
+    }
+
+    private List<Rigidbody> TakeRigidbodyRaycast()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, _fuse.ExplosionRadius);
-        rigidbodies = new();
+        List<Rigidbody>  rigidbodies = new();
 
         foreach (Collider hit in hits) 
         { 
             if (hit.attachedRigidbody != null)
                 rigidbodies.Add(hit.attachedRigidbody);
         }
+
+        return rigidbodies;
     }
 }

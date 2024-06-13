@@ -9,6 +9,7 @@ public class Fuse : MonoBehaviour
     [SerializeField] private float _increaseRadius = 1;
     [SerializeField] private float _increaseForce = 1;
 
+    public float ExplosionForce => _increaseForce;
     public float ExplosionRadius => _explosionRadius;
 
     private void OnValidate()
@@ -23,16 +24,16 @@ public class Fuse : MonoBehaviour
             _increaseRadius = 0;
     }
 
+    public void Init(float explosionForce, float explosionRadius)
+    {
+        _explosionForce = explosionForce + _increaseForce;
+        _explosionRadius = explosionRadius + _increaseRadius;
+    }
+
     public void Share(List<Rigidbody> cubes)
     {
         Explode(cubes);
         Destroy(gameObject);
-    }
-
-    public void IncreaseFuse()
-    {
-        _explosionForce += _increaseForce;
-        _explosionRadius += _increaseRadius;
     }
 
     private void Explode(List<Rigidbody> cubes)
